@@ -1,4 +1,4 @@
-const apiKey = config.apiKey; // Replace the hardcoded API key with the one from config
+const apiKey = process.env.OPENWEATHER_API_KEY; // Use environment variable from Vercel
 const weatherInfo = document.getElementById('weather-info');
 const cityInput = document.getElementById('city-input');
 const searchBtn = document.getElementById('search-btn');
@@ -181,4 +181,4 @@ tempToggleBtn.addEventListener('click', () => {
 });
 
 // Location button event listener
-locationBtn.addEventListener('click', getUserLocation); 
+locationBtn.addEventListener('click', getUserLocation);
