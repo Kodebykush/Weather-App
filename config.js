@@ -1,3 +1,6 @@
+// Store your API key here and add this file to .gitignore
 const config = {
-    apiKey: "fc93bfda3981a66f68efe01a1526f892"
-}; 
+    apiKey: '90d51a48124d37d90a88f806318e3c55'
+};
+
+export default config;

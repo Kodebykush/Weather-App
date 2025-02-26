@@ -1,4 +1,5 @@
-const apiKey = process.env.OPENWEATHER_API_KEY; // Use environment variable from Vercel
+import config from './config.js';
+const apiKey = config.apiKey;
 const weatherInfo = document.getElementById('weather-info');
 const cityInput = document.getElementById('city-input');
 const searchBtn = document.getElementById('search-btn');

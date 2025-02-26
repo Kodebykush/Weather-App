@@ -1,3 +1,7 @@
+// Example configuration file
+// Rename this file to config.js and add your OpenWeatherMap API key
 const config = {
-    apiKey: "your_api_key_here"
-}; 
+    apiKey: 'YOUR_API_KEY_HERE'
+};
+
+export default config;
