@@ -25,7 +25,7 @@ A modern, responsive weather application that provides real-time weather informa
 ## Setup Instructions
 
 1. Clone the repository
-2. CWhere to Store the API Key?
+2. Where to Store the API Key?
 3. Go to Vercel Dashboard
 4. Open your project
 5. Navigate to Settings → Environment Variables
