@@ -1,15 +1,23 @@
+// Global variable to store API key
+let apiKey = '';
 
 // Function to securely get API key from server
 async function getApiKey() {
     try {
         const response = await fetch('/api/getWeather');
         const data = await response.json();
-        return data.key;
+        apiKey = data.key; // Store API key globally
     } catch (error) {
         console.error('Error fetching API key:', error);
-        throw new Error('Failed to get API key');
+        alert('Failed to get API key. The app may not work properly.');
     }
 }
+
+// Call getApiKey() when the page loads
+window.onload = async function () {
+    await getApiKey();
+};
+
 const weatherInfo = document.getElementById('weather-info');
 const cityInput = document.getElementById('city-input');
 const searchBtn = document.getElementById('search-btn');
@@ -21,7 +29,7 @@ let isCelsius = true;
 
 // Function to convert Celsius to Fahrenheit
 function celsiusToFahrenheit(celsius) {
-    return (celsius * 9/5) + 32;
+    return (celsius * 9 / 5) + 32;
 }
 
 // Function to update temperature display
@@ -35,18 +43,24 @@ function updateTempDisplay() {
 
 // Function to get weather by coordinates
 async function getWeatherByCoords(lat, lon) {
+    if (!apiKey) {
+        console.error('API Key is missing');
+        alert('API Key not available. Please try again.');
+        return;
+    }
+
     try {
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
         console.log('Fetching from URL:', url);
-        
+
         const response = await fetch(url);
-        
+
         if (!response.ok) {
             const errorData = await response.json();
             console.error('API Error:', errorData);
             throw new Error(`Error: ${errorData.message || 'Location not found'}`);
         }
-        
+
         const data = await response.json();
         console.log('Weather data:', data);
         updateWeatherInfo(data);
@@ -88,7 +102,7 @@ function removeWeatherClasses() {
 // Function to set background based on weather
 function setWeatherBackground(weatherMain) {
     removeWeatherClasses();
-    
+
     const weatherType = weatherMain.toLowerCase();
     switch (weatherType) {
         case 'clear':
@@ -118,19 +132,26 @@ function setWeatherBackground(weatherMain) {
     }
 }
 
+// Function to get weather data by city
 async function getWeatherData(city) {
+    if (!apiKey) {
+        console.error('API Key is missing');
+        alert('API Key not available. Please try again.');
+        return;
+    }
+
     try {
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
         console.log('Fetching from URL:', url);
-        
+
         const response = await fetch(url);
-        
+
         if (!response.ok) {
             const errorData = await response.json();
             console.error('API Error:', errorData);
             throw new Error(`Error: ${errorData.message || 'City not found'}`);
         }
-        
+
         const data = await response.json();
         console.log('Weather data:', data);
         updateWeatherInfo(data);
@@ -143,6 +164,7 @@ async function getWeatherData(city) {
     }
 }
 
+// Function to update weather info
 function updateWeatherInfo(data) {
     const weatherDesc = document.getElementById('weather-desc');
     const cityName = document.getElementById('city-name');
@@ -159,11 +181,11 @@ function updateWeatherInfo(data) {
     cityName.textContent = `${data.name}, ${data.sys.country}`;
     humidity.textContent = `${data.main.humidity}%`;
     wind.textContent = `${data.wind.speed} m/s`;
-    
+
     // Update weather icon
     const iconCode = data.weather[0].icon;
     weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-    
+
     // Show the weather info container
     weatherInfo.classList.add('active');
 }
